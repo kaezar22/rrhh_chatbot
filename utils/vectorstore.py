@@ -8,7 +8,7 @@ def create_vectorstore(docs, api_key: str):
 
     embeddings = OpenAIEmbeddings(
         model="deepseek-reasoner",
-        openai_api_key="sk-900f90f07b2349d8ba65e95e1eabb2ff",
+        openai_api_key=api_key,
         openai_api_base="https://api.deepseek.com"
     )
 
