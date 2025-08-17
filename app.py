@@ -1,7 +1,7 @@
 import streamlit as st
 from utils.loader import load_files
 from utils.vectorstore import create_vectorstore
-from utils.llm import ask_deepseek
+from utils.llm import ask_gemini
 
 # 👉 Configuración de la página
 st.set_page_config(
@@ -14,26 +14,23 @@ st.title("📄 Carolina-Bot")
 # Inicializar
 FILE_PATHS = ["data/reglamento.pdf", "data/recursos_humanos.txt"]
 
-# 🔑 Clave fija aquí (no usa st.secrets)
-API_KEY = "sk-900f90f07b2349d8ba65e95e1eabb2ff"
-
+# Cargar documentos y vectorstore
 if "vectorstore" not in st.session_state:
     st.write("🔄 Cargando documentos...")
     docs = load_files(FILE_PATHS)
-    st.session_state.vectorstore = create_vectorstore(docs, API_KEY)
+    st.session_state.vectorstore = create_vectorstore(docs)
 
-# Entrada usuario
-question = st.text_input("Qué duda tienes?")
+# Interfaz
+user_input = st.text_input("💬 Pregunta algo sobre RRHH")
+if user_input:
+    retriever = st.session_state.vectorstore.as_retriever()
+    docs = retriever.get_relevant_documents(user_input)
 
-if question:
-    retriever = st.session_state.vectorstore.as_retriever(search_kwargs={"k": 3})
-    related_docs = retriever.get_relevant_documents(question)
+    messages = [
+        {"role": "system", "content": "Eres un asistente experto en políticas de RRHH."},
+        {"role": "user", "content": user_input}
+    ]
 
-    context = "\n\n".join([d.page_content for d in related_docs])
-    answer = ask_deepseek(question, context)
+    answer = ask_gemini(messages)
 
-    st.subheader("Respuesta:")
-    st.write(answer)
-
-    with st.expander("📚 Contexto usado"):
-        st.write(context)
+    st.write("🤖 Respuesta:", answer)
