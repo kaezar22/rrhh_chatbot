@@ -1,4 +1,3 @@
-import os
 import streamlit as st
 from utils.loader import load_files
 from utils.vectorstore import create_vectorstore
@@ -14,12 +13,12 @@ st.title("📄 Carolina-Bot")
 
 # Inicializar
 FILE_PATHS = ["data/reglamento.pdf", "data/recursos_humanos.txt"]
-API_KEY = os.getenv("DEEPSEEK_API_KEY")  # asegúrate de definir esta variable en tu entorno
+API_KEY = st.secrets["DEEPSEEK_API_KEY"]  # ⚡ carga el secreto desde .streamlit/secrets.toml
 
 if "vectorstore" not in st.session_state:
     st.write("🔄 Cargando documentos...")
     docs = load_files(FILE_PATHS)
-    st.session_state.vectorstore = create_vectorstore(docs, API_KEY)  # 👈 ahora sí con api_key
+    st.session_state.vectorstore = create_vectorstore(docs, API_KEY)  # 👈 ahora con api_key
 
 
 # Entrada usuario
