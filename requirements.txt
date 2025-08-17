@@ -14,3 +14,4 @@ pypdf>=4.0.0
 
 # Otros útiles
 python-dotenv>=1.0.0
+langchain_google_vertexai
