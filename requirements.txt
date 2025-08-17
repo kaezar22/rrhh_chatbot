@@ -1,7 +1,16 @@
-streamlit
-pypdf
-langchain
-langchain-community
-faiss-cpu
-sentence-transformers
-openai
+# Webapp
+streamlit>=1.34.0
+
+# LangChain Core
+langchain>=0.2.0
+langchain-community>=0.2.0
+langchain-openai>=0.1.0
+
+# Vectorstore FAISS
+faiss-cpu>=1.7.4
+
+# PDF / Text loaders
+pypdf>=4.0.0
+
+# Otros útiles
+python-dotenv>=1.0.0
