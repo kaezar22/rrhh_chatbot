@@ -5,7 +5,7 @@ import streamlit as st
 
 def create_vectorstore(docs):
     # 🔑 Cargar API key de Google
-    google_api_key = st.secrets["google"]["api_key"]
+    google_api_key = "AIzaSyCoMFqkP0COT38Ik61sy44w1BRg5AlFBdk"
 
     # 🔹 Splitting de documentos
     splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
@@ -17,3 +17,4 @@ def create_vectorstore(docs):
     # 🔹 Crear vectorstore con FAISS
     vectorstore = FAISS.from_documents(chunks, embeddings)
     return vectorstore
+
