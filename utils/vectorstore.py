@@ -1,19 +1,16 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
-from langchain.embeddings.huggingface import HuggingFaceEmbeddings
+from langchain.embeddings.openai import OpenAIEmbeddings  # para compatibilidad
 
-def create_vectorstore(docs):
-    # Dividir documentos en chunks
+def create_vectorstore(docs, api_key: str):
     splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     chunks = splitter.split_documents(docs)
 
-    # Modelo de embeddings ligero y forzado a CPU
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2",
-        model_kwargs={"device": "cpu"}  # 👈 fuerza CPU para evitar el error
+    embeddings = OpenAIEmbeddings(
+        model="text-embedding-3",          # modelo que DeepSeek soporta para embeddings
+        openai_api_key=api_key,
+        openai_api_base="https://api.deepseek.com",
     )
 
-    # Crear el vectorstore
     vectorstore = FAISS.from_documents(chunks, embeddings)
     return vectorstore
-
