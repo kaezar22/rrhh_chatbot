@@ -3,7 +3,7 @@ from utils.loader import load_files
 from utils.vectorstore import create_vectorstore
 from utils.llm import ask_deepseek
 
-# 👉 Esto debe ir al inicio del archivo, antes de st.title()
+# 👉 Configuración de la página
 st.set_page_config(
     page_title="Caro Answers",
     page_icon="💬",
@@ -13,13 +13,14 @@ st.title("📄 Carolina-Bot")
 
 # Inicializar
 FILE_PATHS = ["data/reglamento.pdf", "data/recursos_humanos.txt"]
-API_KEY = st.secrets["DEEPSEEK_API_KEY"]  # ⚡ carga el secreto desde .streamlit/secrets.toml
+
+# 🔑 Clave fija aquí (no usa st.secrets)
+API_KEY = "sk-900f90f07b2349d8ba65e95e1eabb2ff"
 
 if "vectorstore" not in st.session_state:
     st.write("🔄 Cargando documentos...")
     docs = load_files(FILE_PATHS)
-    st.session_state.vectorstore = create_vectorstore(docs, API_KEY)  # 👈 ahora con api_key
-
+    st.session_state.vectorstore = create_vectorstore(docs, API_KEY)
 
 # Entrada usuario
 question = st.text_input("Qué duda tienes?")
