@@ -1,20 +1,13 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import FAISS
-from langchain_google_vertexai import VertexAIEmbeddings
-import streamlit as st
+from langchain.vectorstores import FAISS
+from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 
 def create_vectorstore(docs):
-    # 🔑 Cargar API key de Google
-    google_api_key = "AIzaSyCoMFqkP0COT38Ik61sy44w1BRg5AlFBdk"
-
-    # 🔹 Splitting de documentos
-    splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     chunks = splitter.split_documents(docs)
 
-    # 🔹 Embeddings con VertexAI
-    embeddings = VertexAIEmbeddings(model="text-embedding-004")  
+    # Modelo de embeddings ligero y rápido
+    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
-    # 🔹 Crear vectorstore con FAISS
     vectorstore = FAISS.from_documents(chunks, embeddings)
     return vectorstore
-
