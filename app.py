@@ -12,7 +12,7 @@ st.set_page_config(
 st.title("📄 Carolina-Bot")
 
 # 👉 Cargar API key de DeepSeek desde secrets
-DEEPSEEK_API_KEY = st.secrets["DEEPSEEK_API_KEY"]
+DEEPSEEK_API_KEY = "sk-900f90f072b349d8ba65e95e1eabb2ff"
 
 # Archivos a indexar
 FILE_PATHS = ["data/reglamento.pdf", "data/recursos_humanos.txt"]
@@ -21,7 +21,7 @@ FILE_PATHS = ["data/reglamento.pdf", "data/recursos_humanos.txt"]
 if "vectorstore" not in st.session_state:
     st.write("🔄 Cargando documentos...")
     docs = load_files(FILE_PATHS)
-    api_key = os.getenv("DEEPSEEK_API_KEY")  # o puedes ponerla directo en st.secrets
+    api_key = "sk-900f90f072b349d8ba65e95e1eabb2ff"  # o puedes ponerla directo en st.secrets
     st.session_state.vectorstore = create_vectorstore(docs, api_key)
 
 # Entrada de usuario
@@ -44,4 +44,5 @@ if question:
     # Mostrar contexto
     with st.expander("📚 Contexto usado"):
         st.write(context)
+
 
