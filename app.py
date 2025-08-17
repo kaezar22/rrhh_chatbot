@@ -1,9 +1,10 @@
+import os
 import streamlit as st
 from utils.loader import load_files
 from utils.vectorstore import create_vectorstore
 from utils.llm import ask_deepseek
 
-# 👉 Configuración de la app
+# 👉 Esto debe ir al inicio del archivo, antes de st.title()
 st.set_page_config(
     page_title="Caro Answers",
     page_icon="💬",
@@ -11,38 +12,28 @@ st.set_page_config(
 )
 st.title("📄 Carolina-Bot")
 
-# 👉 Cargar API key de DeepSeek desde secrets
-DEEPSEEK_API_KEY = "sk-900f90f072b349d8ba65e95e1eabb2ff"
-
-# Archivos a indexar
+# Inicializar
 FILE_PATHS = ["data/reglamento.pdf", "data/recursos_humanos.txt"]
+API_KEY = os.getenv("DEEPSEEK_API_KEY")  # asegúrate de definir esta variable en tu entorno
 
-# Inicializar vectorstore solo una vez
 if "vectorstore" not in st.session_state:
     st.write("🔄 Cargando documentos...")
     docs = load_files(FILE_PATHS)
-    api_key = "sk-900f90f072b349d8ba65e95e1eabb2ff"  # o puedes ponerla directo en st.secrets
-    st.session_state.vectorstore = create_vectorstore(docs, api_key)
+    st.session_state.vectorstore = create_vectorstore(docs, API_KEY)  # 👈 ahora sí con api_key
 
-# Entrada de usuario
+
+# Entrada usuario
 question = st.text_input("Qué duda tienes?")
 
 if question:
     retriever = st.session_state.vectorstore.as_retriever(search_kwargs={"k": 3})
     related_docs = retriever.get_relevant_documents(question)
 
-    # Construir contexto con los documentos más relevantes
     context = "\n\n".join([d.page_content for d in related_docs])
+    answer = ask_deepseek(question, context)
 
-    # Preguntar a DeepSeek
-    answer = ask_deepseek(question, context, api_key=DEEPSEEK_API_KEY)
-
-    # Mostrar respuesta
     st.subheader("Respuesta:")
     st.write(answer)
 
-    # Mostrar contexto
     with st.expander("📚 Contexto usado"):
         st.write(context)
-
-
