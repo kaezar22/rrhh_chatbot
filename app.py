@@ -21,7 +21,8 @@ FILE_PATHS = ["data/reglamento.pdf", "data/recursos_humanos.txt"]
 if "vectorstore" not in st.session_state:
     st.write("🔄 Cargando documentos...")
     docs = load_files(FILE_PATHS)
-    st.session_state.vectorstore = create_vectorstore(docs, api_key=DEEPSEEK_API_KEY)
+    api_key = os.getenv("DEEPSEEK_API_KEY")  # o puedes ponerla directo en st.secrets
+    st.session_state.vectorstore = create_vectorstore(docs, api_key)
 
 # Entrada de usuario
 question = st.text_input("Qué duda tienes?")
@@ -43,3 +44,4 @@ if question:
     # Mostrar contexto
     with st.expander("📚 Contexto usado"):
         st.write(context)
+
