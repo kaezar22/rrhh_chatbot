@@ -1,4 +1,4 @@
-from langchain.document_loaders import PyPDFLoader, TextLoader
+from langchain_community.document_loaders import PyPDFLoader, TextLoader
 
 def load_files(file_paths):
     docs = []
@@ -12,3 +12,4 @@ def load_files(file_paths):
         else:
             print(f"⚠️ Tipo de archivo no soportado: {path}")
     return docs
+
