@@ -7,10 +7,11 @@ def create_vectorstore(docs, api_key: str):
     chunks = splitter.split_documents(docs)
 
     embeddings = OpenAIEmbeddings(
-        model="deepseek-reasoner",
+        model="deepseek-embedding",
         openai_api_key=api_key,
         openai_api_base="https://api.deepseek.com"
     )
 
     vectorstore = FAISS.from_documents(chunks, embeddings)
     return vectorstore
+
