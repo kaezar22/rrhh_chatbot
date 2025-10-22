@@ -1,7 +1,19 @@
-streamlit
-pypdf
-langchain
-faiss-cpu
-sentence-transformers
-langchain_community
-openai
+# Core app
+streamlit==1.37.0
+pypdf==4.2.0
+
+# LangChain ecosystem (modularized since 0.1.x)
+langchain==0.2.12
+langchain-community==0.2.12
+langchain-text-splitters==0.2.2
+
+# Embeddings + vector store
+faiss-cpu==1.8.0
+sentence-transformers==2.7.0
+torch==2.2.2
+transformers==4.41.2
+
+# LLM / API
+openai==1.40.2
+
+
