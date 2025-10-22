@@ -7,10 +7,14 @@ def create_vectorstore(docs):
     chunks = splitter.split_documents(docs)
 
     # Modelo de embeddings ligero y rápido
-    embeddings = HuggingFaceEmbeddings( model_name="sentence-transformers/all-MiniLM-L6-v2", encode_kwargs={"device": "cpu"})
+    embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-MiniLM-L6-v2",
+        model_kwargs={"device_map": None},
+        encode_kwargs={"device": "cpu"})
 
     vectorstore = FAISS.from_documents(chunks, embeddings)
     return vectorstore
+
 
 
 
