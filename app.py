@@ -5,11 +5,11 @@ from utils.llm import ask_deepseek
 
 # 👉 Esto debe ir al inicio del archivo, antes de st.title()
 st.set_page_config(
-    page_title="Caro Answers",
+    page_title="RRHH chatbot",
     page_icon="💬",
     layout="wide"
 )
-st.title("📄 Carolina-Bot")
+st.title("📄 Human Resources Answers")
 
 # Inicializar
 FILE_PATHS = ["data/reglamento.pdf", "data/recursos_humanos.txt"]
@@ -35,4 +35,5 @@ if question:
 
     with st.expander("📚 Contexto usado"):
         st.write(context)
+
 
